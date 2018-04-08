@@ -19,33 +19,23 @@ class Board extends React.Component {
       />
     );
   }
+  makeAllSquares() {
+    let table = [];
+    let v = 0;
+    for (let i=0; v < 9; i++) {
+      let squares = [];
+      for (var j = 0; j < 3; j++) {
+        squares.push(this.renderSquare(v));
+        v++;
+      }
+      table.push(<div className="board-row">{squares}</div>)
+    }
+    return (table);
+  }
   render() {
     return (
-      <div>
-        <div className="board-row">
-          <div className="empty">*</div>
-          <div className="ruler">1</div>
-          <div className="ruler">2</div>
-          <div className="ruler">3</div>
-        </div>
-        <div className="board-row">
-          <div className="ruler">A</div>
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          <div className="ruler">B</div>
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          <div className="ruler">C</div>
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
+      <div className="game-squares">
+        {this.makeAllSquares()}
       </div>
     );
   }
@@ -109,7 +99,19 @@ class Game extends React.Component {
     }
     return (
       <div className="game">
+
         <div className="game-board">
+          <div className="board-row">
+            <div className="empty">0</div>
+            <div className="ruler">1</div>
+            <div className="ruler">2</div>
+            <div className="ruler">3</div>
+          </div>
+          <div className="row-names">
+            <div className="ruler">A</div>
+            <div className="ruler">B</div>
+            <div className="ruler">C</div>
+          </div>
           <Board
             squares={current.squares}
             onClick={(i) => this.handleClick(i)}
