@@ -23,16 +23,25 @@ class Board extends React.Component {
     return (
       <div>
         <div className="board-row">
+          <div className="empty">*</div>
+          <div className="ruler">1</div>
+          <div className="ruler">2</div>
+          <div className="ruler">3</div>
+        </div>
+        <div className="board-row">
+          <div className="ruler">A</div>
           {this.renderSquare(0)}
           {this.renderSquare(1)}
           {this.renderSquare(2)}
         </div>
         <div className="board-row">
+          <div className="ruler">B</div>
           {this.renderSquare(3)}
           {this.renderSquare(4)}
           {this.renderSquare(5)}
         </div>
         <div className="board-row">
+          <div className="ruler">C</div>
           {this.renderSquare(6)}
           {this.renderSquare(7)}
           {this.renderSquare(8)}
@@ -50,6 +59,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       stepNumber: 0,
+      stepCoords: "",
       xIsNext: true,
     };
   }
@@ -64,6 +74,7 @@ class Game extends React.Component {
     this.setState({
       history : history.concat([{
         squares: squares,
+        stepCoords: getCoordinate(i),
       }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
@@ -80,8 +91,9 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((step, move) => {
+      const coords = history[move].stepCoords;
       const desc = move ?
-        'Go to move #' + move :
+        'Go to move #' + move + ", " + coords :
         'Go to game start';
       return (
         <li key={move}>
@@ -137,4 +149,13 @@ function calculateWinner(squares) {
     }
   }
   return null;
+}
+
+function getCoordinate(i) {
+  const grid = [
+    "(1,A)", "(2,A)", "(3,A)",
+    "(1,B)", "(2,B)", "(3,B)",
+    "(1,C)", "(2,C)", "(3,C)",
+  ];
+  return grid[i];
 }

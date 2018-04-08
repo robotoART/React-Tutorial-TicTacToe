@@ -32,6 +32,29 @@ text-align: center;
 width: 34px;
 }
 
+.ruler {
+  float: left;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  text-align: center;
+  width: 34px;
+}
+
+.empty {
+  visibility: hidden;
+  float: left;
+  line-height: 34px;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  text-align: center;
+  width: 34px;
+}
+
 .square:focus {
 outline: none;
 }
