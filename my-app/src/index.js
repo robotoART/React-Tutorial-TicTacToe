@@ -51,6 +51,8 @@ class Game extends React.Component {
       stepNumber: 0,
       stepCoords: "",
       xIsNext: true,
+      sortToNext: "Descending",
+      listClassName: "history-list",
     };
   }
   handleClick(i) {
@@ -76,10 +78,25 @@ class Game extends React.Component {
       xIsNext: (step % 2) === 0,
     });
   }
+  toggleSortHistory(sortToNext) {
+    if (sortToNext === "Ascending") {
+      this.setState({
+        sortToNext: "Descending",
+        listClassName: "history-list",
+      });
+    } else {
+      this.setState({
+        sortToNext: "Ascending",
+        listClassName: "history-list-reverse",
+      });
+    }
+  }
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const sortToNext = this.state.sortToNext;
+    const listClassName = this.state.listClassName;
     const moves = history.map((step, move) => {
       const coords = history[move].stepCoords;
       const desc = move ?
@@ -99,7 +116,6 @@ class Game extends React.Component {
     }
     return (
       <div className="game">
-
         <div className="game-board">
           <div className="board-row">
             <div className="empty">0</div>
@@ -119,7 +135,8 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <button className="sort-toggle" onClick={() => this.toggleSortHistory(sortToNext)}>Sort {sortToNext}</button>
+          <ol className={listClassName}>{moves}</ol>
         </div>
       </div>
     );

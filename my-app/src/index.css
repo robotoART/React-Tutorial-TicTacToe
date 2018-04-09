@@ -86,3 +86,8 @@ margin-left: 20px;
   background-color: #08f;
   font-weight: bold;
 }
+
+.history-list-reverse {
+  display: flex;
+  flex-direction: column-reverse;
+}
