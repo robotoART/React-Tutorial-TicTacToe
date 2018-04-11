@@ -4,7 +4,10 @@ import './index.css';
 
 function Square(props) {
   return (
-    <button className="square" onClick={props.onClick}>
+    <button
+      className={props.className}
+      onClick={props.onClick}
+      >
       {props.value}
     </button>
   );
@@ -12,8 +15,16 @@ function Square(props) {
 
 class Board extends React.Component {
   renderSquare(i) {
+    let squareClassName;
+    if (this.props.hilite === null || !this.props.hilite.includes(i)) {
+      squareClassName = "square";
+    } else {
+      squareClassName = "winner-square";
+    }
     return (
       <Square
+        key={i}
+        className={squareClassName}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
       />
@@ -21,14 +32,17 @@ class Board extends React.Component {
   }
   makeAllSquares() {
     let table = [];
+    let c = 0;
     let v = 0;
+    let l = ["A", "B", "C"];
     for (let i=0; v < 9; i++) {
       let squares = [];
-      for (var j = 0; j < 3; j++) {
+      for (let j = 0; j < 3; j++) {
         squares.push(this.renderSquare(v));
         v++;
       }
-      table.push(<div className="board-row">{squares}</div>)
+      table.push(<div key={"row-"+l[c]} className="board-row">{squares}</div>)
+      c++;
     }
     return (table);
   }
@@ -94,7 +108,13 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winnerData = calculateWinner(current.squares);
+    let winner = null;
+    let hilite = null;
+    if (winnerData != null) {
+      winner = winnerData[0];
+      hilite = winnerData[1];
+    }
     const sortToNext = this.state.sortToNext;
     const listClassName = this.state.listClassName;
     const moves = history.map((step, move) => {
@@ -130,6 +150,7 @@ class Game extends React.Component {
           </div>
           <Board
             squares={current.squares}
+            hilite={hilite}
             onClick={(i) => this.handleClick(i)}
           />
         </div>
@@ -151,6 +172,7 @@ ReactDOM.render(
 );
 
 function calculateWinner(squares) {
+  let winnerInfo;
   const lines = [
     [0,1,2],
     [3,4,5],
@@ -164,7 +186,8 @@ function calculateWinner(squares) {
   for (let i=0; i < lines.length; i++) {
     const [a,b,c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] ===squares[c]) {
-      return squares[a];
+      winnerInfo = [squares[a], lines[i]];
+      return winnerInfo;
     }
   }
   return null;
