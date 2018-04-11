@@ -67,6 +67,7 @@ class Game extends React.Component {
       xIsNext: true,
       sortToNext: "Descending",
       listClassName: "history-list",
+      gameOver: false,
     };
   }
   handleClick(i) {
@@ -74,6 +75,7 @@ class Game extends React.Component {
     const current = history[history.length -1];
     const squares = current.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
+      this.setState({ gameOver: true,})
       return;
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -106,8 +108,10 @@ class Game extends React.Component {
     }
   }
   render() {
+    const gameEnd = this.state.gameOver;
     const history = this.state.history;
     const current = history[this.state.stepNumber];
+    const currentStep = this.state.stepNumber;
     const winnerData = calculateWinner(current.squares);
     let winner = null;
     let hilite = null;
@@ -131,6 +135,8 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = 'Winner: ' + winner;
+    } else if (!winner && !gameEnd && currentStep === 9) {
+      status = 'Its a tie, please play again'
     } else {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
